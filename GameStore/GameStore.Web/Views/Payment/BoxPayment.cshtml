@@ -1,0 +1,12 @@
+﻿@model PaymentDetailsViewModel
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "IBox payment";
+}
+<h3>IBox payment</h3>
+<h4>Order: @Model.OrderId</h4>
+<p>IBox Account Number: @Model.BoxAccountNumber</p>
+<p>Invoice Number: @Model.InvoiceNumber</p>
+<p>Order sum: @Model.Sum</p>
+<p><span class="badge badge-info">Press 'Pay' to proceed the payment</span></p>
+<a class="btn btn-success" asp-controller="Orders" asp-action="PayOrder" asp-route-paymentMethod="@Model.PaymentMethod" asp-route-orderId="@Model.OrderId">Pay</a>

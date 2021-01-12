@@ -1,0 +1,35 @@
+﻿@using GameStore.Bll.Dto
+@model IEnumerable<GenreDto>
+@{
+    ViewBag.Title = "Genres";
+    Layout = "_Layout";
+}
+<h1>Genres</h1>
+<a asp-controller="Genres" asp-action="GetForEditGenres">Edit</a>
+@if (Model.Any())
+{
+    await DisplayTree(Model);
+}
+else
+{
+    <span class="badge badge-warning">No Genres yet...</span>
+}
+@functions{
+    async Task DisplayTree(IEnumerable<GenreDto> genres)
+    {
+        <ul class="list-group">
+            @foreach (var genre in genres)
+            {
+                <li class="list-group-item">
+                    <div>
+                        <h5><b>@genre.Name</b></h5>
+                    </div>
+                    @if (genre.ChildrenGenres.Any())
+                    {
+                        await DisplayTree(genre.ChildrenGenres);
+                    }
+                </li>
+            }
+        </ul>
+    }
+}

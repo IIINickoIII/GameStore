@@ -1,0 +1,15 @@
+﻿@model PlatformTypeViewModel
+@{
+    ViewBag.Title = "Platform Type";
+    Layout = "_Layout";
+}
+<h1>Platform Type</h1>    
+<form method="post" asp-controller="PlatformTypes" asp-action="Save">
+    <div class="form-group">
+        <label asp-for="Type" class="col-form-label">Type</label><br />
+        <input asp-for="Type" class="form-control" />
+        <span asp-validation-for="Type" class="text-danger"></span>
+    </div>
+    <input asp-for="Id" type="hidden" />
+    <input type="submit" value="Save" />
+</form>

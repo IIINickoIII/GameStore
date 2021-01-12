@@ -1,0 +1,26 @@
+﻿@model IEnumerable<GameStore.Bll.Dto.GameDto>
+@{
+    ViewData["Title"] = "Games";
+    Layout = "_Layout";
+}
+<h1>Games</h1>
+<a asp-controller="Games" asp-action="GetForEditGames">Edit</a>
+<table class="table table-active">
+    <thead>
+    <tr scope="row">
+        <th>Name</th>
+        <th>Stock</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var game in Model)
+    {
+        <tr scope="row">
+            <td><a asp-controller="Games" asp-action="GameDetails" asp-route-gameId="@game.Id">@game.Name</a></td>
+            <td>@game.UnitInStock</td>
+            <td>@game.Description</td>
+        </tr>
+    }
+    </tbody>
+</table>

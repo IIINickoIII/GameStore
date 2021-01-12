@@ -1,0 +1,41 @@
+﻿@model IEnumerable<GameStore.Bll.Dto.OrderDto>
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Orders";
+}
+<h3>Orders</h3>
+@if (Model.Any())
+{
+    <table class="table table-active">
+        <thead>
+        <tr scope="row">
+            <th>Id</th>
+            <th>Date</th>
+            <th>Paid</th>
+            <th>Sum</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var order in Model)
+        {
+            <tr scope="row">
+                <td>@order.Id</td>
+                <td>@order.Date</td>
+                @if (order.IsPaid)
+                {
+                    <td><span class="badge badge-success">Paid</span></td>
+                }
+                else
+                {
+                    <td><span class="badge badge-warning">Not Paid</span></td>
+                }
+                <td>@order.TotalSum$</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <span class="badge badge-warning">You have no orders yet</span>
+}

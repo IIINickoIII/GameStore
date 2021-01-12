@@ -1,0 +1,28 @@
+﻿@model IEnumerable<GameStore.Bll.Dto.PlatformTypeDto>
+@{
+    ViewBag.Title = "Edit Platform Types";
+    Layout = "_Layout";
+}
+<h1>Edit Platform Types</h1>
+<a asp-controller="PlatformTypes" asp-action="CreatePlatformType">Add new</a>
+<table class="table table-active">
+    <thead>
+        <tr scope="row">
+            <th>Id</th>
+            <th>Type</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var platformType in Model)
+        {
+            <tr scope="row">
+                <td>@platformType.Id</td>
+                <td><a asp-controller="PlatformTypes" asp-action="PlatformTypeDetails" asp-route-platformTypeId="@platformType.Id">@platformType.Type</a></td>
+                <td><a asp-controller="PlatformTypes" asp-action="EditPlatformType" asp-route-platformTypeId="@platformType.Id">Edit</a></td>
+                <td><a asp-controller="PlatformTypes" asp-action="DeletePlatformType" asp-route-platformTypeId="@platformType.Id">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<GameStore.Bll.Dto.GameDto>
+@{
+    ViewData["Title"] = "Editing Games";
+    Layout = "_Layout";
+}
+<h1>Games</h1>
+<a asp-controller="Games" asp-action="CreateGame">Add Game</a>
+<table class="table table-active">
+    <thead>
+    <tr scope="row">
+        <th>Id</th>
+        <th>Name</th>
+        <th>Key</th>
+        <th>Price</th>
+        <th>Discount</th>
+        <th>Stock</th>
+        <th>Discontinued</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var game in Model)
+    {
+        <tr scope="row">
+            <td>@game.Id</td>
+            <td><a asp-controller="Games" asp-action="GameDetails" asp-route-gameId="@game.Id">@game.Name</a></td>
+            <td>@game.Key</td>
+            <td>@game.Price</td>
+            <td>@game.Discount%</td>
+            <td>@game.UnitInStock</td>
+            <td>
+                @if (game.Discontinued)
+                {
+                    <span class="badge badge-danger">Discontinued</span>
+                }
+                else
+                {
+                    <span class="badge badge-success">Available</span>
+                }
+            </td>
+            <td><a asp-controller="Games" asp-action="EditGame" asp-route-gameId="@game.Id">Edit</a></td>
+            <td><a asp-controller="Games" asp-action="DeleteGame" asp-route-gameId="@game.Id">Delete</a></td>
+        </tr>
+    }
+    </tbody>
+</table>

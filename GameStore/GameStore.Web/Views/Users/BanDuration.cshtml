@@ -1,0 +1,15 @@
+﻿@using GameStore.Bll.Dto.Enums
+@model UserBanViewModel
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Ban Duration";
+}
+<h3>Ban user №@Model.UserId - User Name</h3>
+<form asp-controller="Users" asp-action="BanUser">
+    <input type="hidden" asp-for="UserId" />
+    <label asp-for="BanDurationEnum" class="col-form-label"></label>
+    <select asp-for="BanDurationEnum"
+            asp-items="Html.GetEnumSelectList<BanDurationEnum>()"></select>
+    <span asp-validation-for="BanDurationEnum" class="text-danger"></span>
+    <input class="btn btn-sm btn-secondary" type="submit" value="Ban" />
+</form>

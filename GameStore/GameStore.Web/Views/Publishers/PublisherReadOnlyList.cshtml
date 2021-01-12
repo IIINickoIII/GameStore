@@ -1,0 +1,24 @@
+﻿@model IEnumerable<GameStore.Bll.Dto.PublisherDto>
+@{
+    ViewData["Title"] = "Publishers";
+    Layout = "_Layout";
+}
+<h1>Publishers</h1>
+<a asp-controller="Publishers" asp-action="GetForEditPublishers">Edit</a>
+<table class="table table-active">
+    <thead>
+    <tr scope="row">
+        <th>Company</th>
+        <th>Website</th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var publisher in Model)
+        {
+        <tr scope="row">
+            <td><a asp-controller="Publishers" asp-action="PublisherDetails" asp-route-publisherId="@publisher.Id">@publisher.CompanyName</a></td>
+            <td><a target="_blank" rel="noopener noreferrer" href="http:@publisher.HomePage">www.@publisher.HomePage</a></td>
+        </tr>
+        }
+    </tbody>
+</table>

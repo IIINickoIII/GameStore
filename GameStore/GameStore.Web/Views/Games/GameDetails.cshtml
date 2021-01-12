@@ -1,0 +1,27 @@
+﻿@model GameStore.Bll.Dto.GameDto
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "_Layout";
+}
+<h1>@Model.Name</h1>
+<hr/>
+<h5>Key: @Model.Key</h5>
+<h5>Price: @Model.Price $</h5>
+<p>@Model.Description</p>
+<b>Genres:</b>
+<p>
+    @foreach (var genre in Model.Genres)
+    {
+        <span class="badge badge-info">@genre.Name</span>
+    }
+</p>
+<b>Platform Types:</b>
+<p>
+    @foreach (var platformType in Model.PlatformTypes)
+    {
+        <span class="badge badge-warning">@platformType.Type</span>
+    }
+</p>
+<a asp-controller="OrderItems" asp-action="CreateOrderItem" asp-route-gameId="@Model.Id" class="btn btn-sm btn-outline-success">Add to basket</a>
+<a asp-controller="Comments" asp-action="GetCommentsByGameKey" asp-route-gameKey="@Model.Key" class="btn btn-sm btn-outline-secondary">Comments</a>
+<a asp-controller="Games" asp-action="DownloadGame" asp-route-gameId="@Model.Id" class="btn btn-sm btn-outline-danger">Download</a>

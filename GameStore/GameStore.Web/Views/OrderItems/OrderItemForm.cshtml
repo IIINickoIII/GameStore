@@ -1,0 +1,38 @@
+﻿@model OrderItemViewModel
+@{
+    ViewBag.Title = $"But - {Model.Game.Name}";
+    Layout = "_Layout";
+}
+<h1>- @Model.Game.Name -</h1>
+<hr/>
+<h3><span class="badge badge-success">Price: @Model.Game.Price $</span></h3>
+<h3>
+    @if (Model.Game.Discount > 0)
+    {
+        <span class="badge badge-warning">Discount: @Model.Game.Discount %</span>
+    }
+    else
+    {
+        <span class="badge badge-danger">Discount: No</span>
+    }
+</h3>
+<form method="post" asp-controller="OrderItems" asp-action="Save">
+    <div class="form-group">
+        <label asp-for="Quantity" class="col-form-label"></label>
+        <input type="number" min="1" max="100" step="1" asp-for="Quantity" class="form-control" onkeydown="return event.keyCode !== 69" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="Price" value="@Model.Game.Price" />
+    <input type="hidden" asp-for="Discount" value="@Model.Game.Discount" />
+    <input type="hidden" asp-for="GameId" />
+    <input type="hidden" asp-for="IsInOrder" />
+    <input type="hidden" asp-for="Id" />
+    @if (Model.Id == 0)
+    {
+        <input type="submit" value="Add to Basket" />
+    }
+    else
+    {
+        <input type="submit" value="Save" />
+    }
+</form>

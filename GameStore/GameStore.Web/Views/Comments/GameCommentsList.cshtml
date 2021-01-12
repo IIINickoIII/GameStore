@@ -1,0 +1,125 @@
+﻿@using GameStore.Bll.Dto
+@model GameCommentViewModel
+@{
+    ViewBag.Title = $"Comments: {Model.Game.Name}";
+    Layout = "_Layout";
+}
+<p>Comments for <b>@Model.Game.Name</b></p>
+@if (Model.Comments.Any())
+{
+    await DisplayTree(Model.Comments);
+}
+else
+{
+    <span class="badge badge-warning">This game has no comments yet...</span>
+}
+<form method="post" asp-controller="Comments" asp-action="AddCommentToGame" asp-route-gameKey="@Model.Game.Key">
+    <div class="form-group">
+        <input asp-for="@Model.CommentCreate.Name" placeholder="Enter your name" />
+        <span asp-validation-for="@Model.CommentCreate.Name" class="text-danger"></span>
+        <textarea asp-for="@Model.CommentCreate.Body" class="form-control" placeholder="Enter your comment"></textarea>
+        <span asp-validation-for="@Model.CommentCreate.Body" class="text-danger"></span>
+        <input asp-for="@Model.CommentCreate.GameId" value="@Model.Game.Id" type="hidden" />
+        <input class="btn btn-outline-secondary" type="submit" value="Send" />
+    </div>
+</form>
+@functions{
+    async Task DisplayTree(IEnumerable<CommentDto> comments)
+    {
+        <ul class="list-group">
+            @foreach (var comment in comments)
+            {
+                <li class="list-group-item">
+                    <div>
+                        <h5><b>@comment.Name</b> <a class="btn btn-sm btn-outline-warning" asp-controller="Users" asp-action="SelectBanDuration" asp-route-userId="1">Ban</a></h5>
+                        <p>@comment.Body</p>
+                        <h6>Date: @comment.Time</h6>
+                        <div>
+                            <form method="post" asp-controller="Comments" asp-action="AddCommentToGame" asp-route-gameKey="@Model.Game.Key">
+                                <a class="btn btn-outline-secondary btn-display" onclick="showForm(event)">Answer to @comment.Name</a>
+                                <div class="form-group div-that-should-be-hidden" hidden>
+                                    <div></div>
+                                    <input asp-for="@Model.CommentCreate.Name" placeholder="Enter your name"/>
+                                    <span asp-validation-for="@Model.CommentCreate.Name" class="text-danger"></span>
+                                    <textarea id="myId" asp-for="@Model.CommentCreate.Body" class="form-control" placeholder="Enter your comment"></textarea>
+                                    <span asp-validation-for="@Model.CommentCreate.Body" class="text-danger"></span>
+                                    <input asp-for="@Model.CommentCreate.GameId" value="@Model.Game.Id" type="hidden" />
+                                    <input asp-for="@Model.CommentCreate.ParentCommentId" value="@comment.Id" type="hidden" />
+                                    <input class="btn btn-outline-warning quote" type="button" value="Quote" onclick="getElement(event)" />
+                                    <input class="btn btn-outline-secondary" type="submit" value="Answer to @comment.Name" onclick="addQuotedTextToNewComment(event)" />
+                                    <input class="btn btn-outline-danger" type="button" data-toggle="modal" data-target="#delete-comment-confirmation-modal" value="Delete" onclick="replaceDeleteButtonToModal(@comment.Id)" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    @if (comment.ChildrenComments.Any())
+                    {
+                        await DisplayTree(comment.ChildrenComments);
+                    }
+                </li>
+            }
+        </ul>
+    }
+}
+<div class="modal" id="delete-comment-confirmation-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete comment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Delete this comment?</p>
+            </div>
+            <div class="modal-footer">
+                <a id="modal-delete-confirmation" class="btn btn-success">Yes</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function replaceDeleteButtonToModal(commentId) {
+        var modelDeleteConfirmationButton = document.getElementById("modal-delete-confirmation");
+        modelDeleteConfirmationButton.setAttribute("href", "/comments/delete/" + commentId);
+    }
+
+    function getElement(event) {
+        var quote = document.createElement("quote");
+        quote.innerText = event.target.parentElement.parentElement.parentElement.parentElement.childNodes[3].innerText;
+        var p = document.createElement("p");
+        p.innerText = "You quote: ";
+        p.appendChild(quote);
+        event.target.parentElement.firstElementChild.innerHTML = p.outerHTML;
+    }
+
+    function addQuotedTextToNewComment(event) {
+        var quoteIfExist = event.target.parentElement.firstElementChild.innerHTML;
+        if (quoteIfExist.indexOf("quote") != -1) {
+            var message = event.target.parentElement.parentElement.parentElement.parentElement.childNodes[3].innerText;
+            var quotedText = '"' + message + '" - ';
+            var textInInput = event.target.parentElement.childNodes[7].value;
+            if (textInInput) {
+                if (textInInput.indexOf(quotedText)) {
+                    var newText = quotedText + textInInput;
+                    event.target.parentElement.childNodes[7].value = newText;
+                }
+            }
+        }
+    }
+
+    function showForm(event) {
+        var divs = document.getElementsByClassName("div-that-should-be-hidden");
+        for (let i = 0; i < divs.length; i++) {
+            divs[i].hidden = true;
+        }
+        var btns = document.getElementsByClassName("btn-display");
+        for (let i = 0; i < btns.length; i++) {
+            btns[i].hidden = false;
+        }
+        event.target.hidden = true;
+        event.target.nextSibling.nextSibling.hidden = false;
+    }
+</script>

@@ -1,0 +1,28 @@
+﻿@model IEnumerable<GameStore.Bll.Dto.GenreDto>
+@{
+    ViewBag.Title = "Edit Genres";
+    Layout = "_Layout";
+}
+<h1>Genres</h1>
+<a asp-controller="Genres" asp-action="CreateGenre">Add new</a>
+<table class="table table-active">
+    <thead>
+        <tr scope="row">
+            <th>Id</th>
+            <th>Genre</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var genre in Model)
+        {
+            <tr scope="row">
+                <td>@genre.Id</td>
+                <td><a asp-controller="Genres" asp-action="GenreDetails" asp-route-genreId="@genre.Id">@genre.Name</a></td>
+                <td><a asp-controller="Genres" asp-action="EditGenre" asp-route-genreId="@genre.Id">Edit</a></td>
+                <td><a asp-controller="Genres" asp-action="DeleteGenre" asp-route-genreId="@genre.Id">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

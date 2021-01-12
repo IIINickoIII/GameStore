@@ -1,0 +1,71 @@
+﻿@model GameStore.Bll.Dto.OrderDto
+@{
+    ViewBag.Title = "Basket";
+    Layout = "_Layout";
+    var totalOrderPrice = new decimal();
+}
+<h3>Order Details</h3>
+<table class="table table-active">
+    <thead>
+        <tr scope="row">
+            <th>Item</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Without Discount</th>
+            <th>Discount</th>
+            <th>With Discount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var orderItem in Model.OrderItems)
+        {
+            totalOrderPrice += orderItem.SumWithDiscount;
+            <tr scope="row">
+                <td><a asp-controller="Games" asp-action="GameDetails" asp-route-gameId="@orderItem.GameId">@orderItem.Game.Name</a></td>
+                <td>@orderItem.Price$</td>
+                <td>@orderItem.Quantity</td>
+                <td>@orderItem.SumWithoutDiscount</td>
+                <td>@orderItem.Discount%</td>
+                <td>@orderItem.SumWithDiscount$</td>
+            </tr>
+        }
+        <tr scope="row">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><b>Total Sum:</b></td>
+            @if (Model.IsPaid)
+            {
+                <td>@totalOrderPrice$<span class="badge badge-success">Paid</span></td>
+            }
+            else
+            {
+                <td>@totalOrderPrice$ <span class="badge badge-warning">Not Paid</span></td>
+            }
+        </tr>
+    </tbody>
+</table>
+<h3>Payment methods</h3>
+<table class="table table-active">
+    <tbody>
+        <tr scope="row">
+            <td><img src="/pictures/payment_methods/bank.png" alt="Bank icon" width="100" height="50" /></td>
+            <td><b>Bank</b></td>
+            <td>You will get an invoice file for payment</td>
+            <td><a class="btn btn-success" asp-controller="Orders" asp-action="BankPayment" asp-route-orderId="@Model.Id">Pay</a></td>
+        </tr>
+        <tr scope="row">
+            <td><img src="/pictures/payment_methods/ibox.png" alt="IBox icon" width="100" /></td>
+            <td><b>IBox</b></td>
+            <td>You will be redirected to the page with IBox account number for payment</td>
+            <td><a class="btn btn-success" asp-controller="Orders" asp-action="BoxPayment" asp-route-orderId="@Model.Id">Pay</a></td>
+        </tr>
+        <tr scope="row">
+            <td><img src="/pictures/payment_methods/visa.png" alt="Visa icon" width="100" /></td>
+            <td><b>Visa</b></td>
+            <td>You will be redirected to bank's page for payment</td>
+            <td><a class="btn btn-success" asp-controller="Orders" asp-action="VisaPayment" asp-route-orderId="@Model.Id">Pay</a></td>
+        </tr>
+    </tbody>
+</table>

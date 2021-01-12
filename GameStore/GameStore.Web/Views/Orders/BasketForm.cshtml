@@ -1,0 +1,49 @@
+﻿@model GameStore.Bll.Dto.OrderDto
+@{
+    ViewBag.Title = "Basket";
+    Layout = "_Layout";
+}
+<h1>Basket</h1>
+@if (!Model.OrderItems.Any())
+{
+    <p><span class="badge badge-warning">No items in your basket yet</span></p>
+}
+else
+{
+    <table class="table table-active">
+        <thead>
+        <tr scope="row">
+            <th>Item</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Discount</th>
+            <th>Final</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var orderItem in Model.OrderItems)
+        {
+            <tr scope="row">
+                <td><a asp-controller="Games" asp-action="GameDetails" asp-route-gameId="@orderItem.GameId">@orderItem.Game.Name</a></td>
+                <td>@orderItem.Price$</td>
+                <td>@orderItem.Quantity</td>
+                <td>@orderItem.SumWithoutDiscount$</td>
+                <td>@orderItem.Discount%</td>
+                <td>@orderItem.SumWithDiscount$</td>
+                <td><a asp-controller="OrderItems" asp-action="DeleteOrderItem" asp-route-orderItemId="@orderItem.Id">Delete</a></td>
+            </tr>
+        }
+        <tr scope="row">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><b>Sum:</b> @Model.TotalSum</td>
+            <td><a asp-controller="Orders" asp-action="MakeOrder" class="btn btn-sm btn-success">Make order</a></td>
+        </tr>
+        </tbody>
+    </table>   
+}

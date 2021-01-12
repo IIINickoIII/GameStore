@@ -1,0 +1,7 @@
+﻿@model GameStore.Bll.Dto.GameDto
+@{
+    ViewBag.Title = $"{Model.Name} download";
+    Layout = "_Layout";
+}
+<p>To download <b>@Model.Name</b> press the button</p>
+<a class="btn btn-primary" asp-controller="Games" asp-action="GetGameFile" asp-route-gameKey="@Model.Key">Download</a>

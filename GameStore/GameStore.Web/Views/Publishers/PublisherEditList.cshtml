@@ -1,0 +1,30 @@
+﻿@model IEnumerable<GameStore.Bll.Dto.PublisherDto>
+@{ 
+    ViewBag.Title = "Edit Publishers";
+    Layout = "_Layout";
+}
+<h1>Edit Publishers</h1>
+<a asp-controller="Publishers" asp-action="CreatePublisher">Add new</a>
+<table class="table table-active">
+    <thead>
+        <tr scope="row">
+            <th>Id</th>
+            <th>Company</th>
+            <th>Website</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var publisher in Model)
+        {
+            <tr scope="row">
+                <td>@publisher.Id</td>
+                <td><a asp-controller="Publishers" asp-action="PublisherDetails" asp-route-publisherId="@publisher.Id">@publisher.CompanyName</a></td>
+                <td><a target="_blank" rel="noopener noreferrer" href="http:@publisher.HomePage">www.@publisher.HomePage</a></td>
+                <td><a asp-controller="Publishers" asp-action="EditPublisher" asp-route-publisherId="@publisher.Id">Edit</a></td>
+                <td><a asp-controller="Publishers" asp-action="DeletePublisher" asp-route-publisherId="@publisher.Id">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

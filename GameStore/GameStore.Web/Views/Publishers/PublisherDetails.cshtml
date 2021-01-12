@@ -1,0 +1,8 @@
+﻿@model PublisherViewModel
+@{
+    ViewBag.Title = Model.CompanyName;
+    Layout = "_Layout";
+}
+<h1>@Model.CompanyName</h1>
+<h3><a target="_blank" rel="noopener noreferrer" href="http:@Model.HomePage">www.@Model.HomePage</a></h3>
+<p>@Model.Description</p>
